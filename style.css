@@ -1,0 +1,13 @@
+.flex-box-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.right-element {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
