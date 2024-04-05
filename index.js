@@ -1,3 +1,18 @@
+const { readFile } = require('fs/promises');
+
+// class to create student objects
+class Student {
+  constructor(firstName, lastName, grade = 0) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.grade = grade;
+  }
+}
+
+Student.prototype.fullName = function () {
+  return `${this.firstName} ${this.lastName}`;
+}
+
 //string of names from BCS
 const studentsString = `Anderson, Michael
 Present
@@ -87,16 +102,7 @@ const parseStudents = (studentsString) => {
   });
 
   const output = filteredArray.map((fullName) => {
-    class Student {
-      constructor(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-      }
-    }
 
-    Student.prototype.fullName = function () {
-      return `${this.firstName} ${this.lastName}`;
-    }
 
     const nameArray = fullName.split(", ");
     const studentObject = new Student(nameArray[1], nameArray[0]);
@@ -105,14 +111,55 @@ const parseStudents = (studentsString) => {
 
   return output;
 };
+// const students = parseStudents(studentsString).map((student) => {
+//   return student.fullName();
+// });
+// console.log(students);
+// console.log(
+//   `There are ${students.length} students in this class.`
+// );
 
-const students = parseStudents(studentsString).map((student) => {
-  return student.fullName();
-});
-console.log('wtf', students);
-console.log(
-  `There are ${parseStudents(studentsString).length} students in this class.`
-);
+// output the csv file from inputData folder as a string
+// csv file should be from BCS grades/expot/"Export Entire Gradebook"
+
+const parseCsv = async(inputFile) => {
+  try {
+    const csvString = await readFile(inputFile, "utf8");
+    csvArray = csvString.split("\n");
+    const trimmedCsvArray = csvArray.slice(2, csvArray.length - 2);
+
+    // parse the csv array into an array of student objects
+    const studentsArray = trimmedCsvArray.map((item) => {
+      const singleStudentArray = item.split(",");
+      const firstName = singleStudentArray[1].replace('"', '').trim();
+      const lastName = singleStudentArray[0].replace('"', '').trim();
+      grade = singleStudentArray[83];
+      const studentObject = new Student(firstName, lastName, grade);
+      return studentObject;
+    });
+    
+    return studentsArray;
+
+  } catch (error) {
+    console.error(`Got an error trying to read the file: ${error.message}`);
+  }
+};
+
+const displayStudents = async(inputFile) => {
+  const students = await parseCsv(inputFile)
+  const outputArr = students.map((student) => {
+    outputStr = `${student.fullName()} has a grade of ${student.grade}%.`;
+    return outputStr;
+  });
+
+  for (student of outputArr) {
+    console.log(student);
+  }
+};
+
+displayStudents("inputData/BCS.csv");
+
+
 
 // groups of 5
 const array1 = [
