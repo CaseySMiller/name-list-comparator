@@ -1,100 +1,118 @@
 //string of names from BCS
 const studentsString = `Anderson, Michael
-None
+Present
 Bringhurst, Aaron
-None
+Present
 Burr, Brad
-None
+Present
 Castro, Jorge
-None
+Present
 Czerwinski, Brett
-None
+Present
 Dalton, Charlotte
-None
+Present
 Edmunds, Eric
-None
+Present
 Fenton, Cheryl
-None
+Present
 Fischer, Joel
-None
+Present
 Giles, Dallas
-None
+Present
 Gonzalez, Karina
-None
+Present
 Gonzalez, Paula
-None
+Present
 Granger, Patrick
-None
+Present
 Griffiths, Kai
-None
+Present
 Hernandez, Aiona
-None
+Present
 Kirby, Kyle
-None
+Present
 Madigan, Sean
-None
+Present
 Maxfield, Robert
-None
+Present
 McKinney, Elizabeth
-None
+Present
 Mcmicken, Alex
-None
+Present
 Parry, Tisha
-None
+Present
 Pippin, David
-None
+Present
 Przybyla, Dayel
-None
+Absent
 Riedinger, Patrick
-None
+Present
 Rodriguez, Olivia
-None
+Present
 Schwendiman, Ben
-None
+Present
 Sego, Derek
-None
+Present
 Shade, Ricardo
-None
+Present
 Shumway, Charles
-None
+Present
 Shumway, John
-None
+Present
 Smith, Tristan
-None
+Present
 Sorenson, Kendall
-None
+Present
 Taylor, Betzaida
-None
+Present
 Toton, Jacob
-None
+Present
 Tran, Thai
-None
+Present
 Waterbury, Brennan
-None
-Wilson, Charles`;
+Present
+Wilson, Charles
+Present`;
 
 const parseStudents = (studentsString) => {
-  const studentsArray = studentsString.split('\n');
+  const studentsArray = studentsString.split("\n");
 
   const filteredArray = studentsArray.filter((item) => {
-    return item !== 'None';
-  })
+    return (
+      item !== "None" &&
+      item !== "Present" &&
+      item !== "Absent" &&
+      item !== "Absent - Excused"
+    );
+  });
 
   const output = filteredArray.map((fullName) => {
-    const nameArray = fullName.split(', ');
-    const studentObject = {
-      firstName: nameArray[1],
-      lastName: nameArray[0],
-    };
+    class Student {
+      constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+      }
+    }
+
+    Student.prototype.fullName = function () {
+      return `${this.firstName} ${this.lastName}`;
+    }
+
+    const nameArray = fullName.split(", ");
+    const studentObject = new Student(nameArray[1], nameArray[0]);
     return studentObject;
   });
 
   return output;
-}
+};
 
-console.log(parseStudents(studentsString));
-console.log(`There are ${parseStudents(studentsString).length} students in this class.`);
-
+const students = parseStudents(studentsString).map((student) => {
+  return student.fullName();
+});
+console.log('wtf', students);
+console.log(
+  `There are ${parseStudents(studentsString).length} students in this class.`
+);
 
 // groups of 5
 const array1 = [
@@ -136,42 +154,42 @@ const array1 = [
 
 //groups of 4
 const array2 = [
-  ' Kendall Sorenson',
-    ' Tisha Parry',
-    ' Kyle Kirby',
-    ' Aaron Bringhurst',
-    ' Tristan Smith',
-    ' Derek Sego',
-    ' Patrick Granger',
-    ' Charlotte Dalton',
-    ' Jacob Toton',
-    ' Dayel Przybyla',
-    ' Sean Madigan',
-    ' Cheryl Fenton',
-    ' Brennan Waterbury',
-    ' Alex Mcmicken',
-    ' Aiona Hernandez',
-    ' Brett Czerwinski',
-    ' Charles Shumway',
-    ' Ricardo Shade',
-    ' Kai Griffiths',
-    ' Eric Edmunds',
-    ' Charles Wilson',
-    ' Olivia Rodriguez',
-    ' Dallas Giles',
-    ' Michael Anderson',
-    ' Betzaida Taylor',
-    ' Ben Schwendiman',
-    ' Paula Gonzalez',
-    ' Thai Tran',
-    ' Patrick Riedinger',
-    ' Robert Maxfield',
-    ' Brad Burr',
-    ' John Shumway',
-    ' David Pippin',
-    ' Karina Gonzalez',
-    ' Jorge Castro'
-]
+  " Kendall Sorenson",
+  " Tisha Parry",
+  " Kyle Kirby",
+  " Aaron Bringhurst",
+  " Tristan Smith",
+  " Derek Sego",
+  " Patrick Granger",
+  " Charlotte Dalton",
+  " Jacob Toton",
+  " Dayel Przybyla",
+  " Sean Madigan",
+  " Cheryl Fenton",
+  " Brennan Waterbury",
+  " Alex Mcmicken",
+  " Aiona Hernandez",
+  " Brett Czerwinski",
+  " Charles Shumway",
+  " Ricardo Shade",
+  " Kai Griffiths",
+  " Eric Edmunds",
+  " Charles Wilson",
+  " Olivia Rodriguez",
+  " Dallas Giles",
+  " Michael Anderson",
+  " Betzaida Taylor",
+  " Ben Schwendiman",
+  " Paula Gonzalez",
+  " Thai Tran",
+  " Patrick Riedinger",
+  " Robert Maxfield",
+  " Brad Burr",
+  " John Shumway",
+  " David Pippin",
+  " Karina Gonzalez",
+  " Jorge Castro",
+];
 
 // console.log(`Array 1 length is ${array1.length}`)
 // console.log(`Array 2 length is ${array2.length}`)
@@ -184,10 +202,10 @@ const compareArrays = (array1, array2) => {
     return !array1.includes(item);
   });
 
-  const outputString = result.join(', ')
-  const outputStringReversed = resultRversed.join(', ')
-  const output = `Array 1 contains the name(s): ${outputString} that are not in Array 2 and Array 2 contains the nmae(s): ${outputStringReversed} that are not in Array 1`
+  const outputString = result.join(", ");
+  const outputStringReversed = resultRversed.join(", ");
+  const output = `Array 1 contains the name(s): ${outputString} that are not in Array 2 and Array 2 contains the nmae(s): ${outputStringReversed} that are not in Array 1`;
   return output;
-}
+};
 
 // console.log(compareArrays(array1, array2));
